@@ -1,6 +1,17 @@
 import artisanImg from '@/assets/artisan-story.jpg';
 import { Link } from 'react-router-dom';
 
+const categories = [
+  { label: 'Women', href: '/category/women' },
+  { label: 'Men', href: '/category/men' },
+  { label: 'Jewelry', href: '/category/jewelry' },
+  { label: 'Home', href: '/category/home' },
+  { label: 'Wedding', href: '/category/wedding' },
+  { label: 'Festive', href: '/category/festive' },
+  { label: 'Gifting', href: '/category/gifting' },
+  { label: 'Under $150', href: '/category/under-150' },
+];
+
 const StorytellingSection = () => (
   <section className="bg-charcoal overflow-hidden">
     <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -15,8 +26,8 @@ const StorytellingSection = () => (
       </div>
 
       {/* Content */}
-      <div className="flex items-center py-16 lg:py-24 px-8 lg:px-16 xl:px-24">
-        <div className="max-w-lg">
+      <div className="flex items-center py-16 lg:py-20 px-8 lg:px-12 xl:px-16">
+        <div className="max-w-2xl">
           <span className="text-[10px] tracking-[0.35em] uppercase text-gold">From India to Your Home</span>
           <h2 className="font-serif text-3xl lg:text-4xl text-cream mt-4 mb-6 leading-tight">
             Every Thread Carries a Story of Generations
@@ -31,7 +42,23 @@ const StorytellingSection = () => (
             legacy. You bridge the distance between where you are and where your roots
             lie. You become part of the story.
           </p>
-          <div className="flex items-center gap-6">
+
+          <div className="mb-8">
+            <p className="text-xs text-cream/40 uppercase tracking-[0.1em] mb-4 font-medium">Explore Collections</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {categories.map((cat) => (
+                <Link
+                  key={cat.label}
+                  to={cat.href}
+                  className="px-4 py-2 border border-cream/30 text-cream/80 text-xs uppercase tracking-[0.1em] font-medium hover:bg-cream/10 hover:border-cream/60 transition-all duration-300 text-center"
+                >
+                  {cat.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-6 pt-4">
             <Link to="/story" className="btn-brand-gold text-xs">Our Story</Link>
             <div className="flex items-center gap-4 text-cream/40 text-xs">
               <div className="text-center">

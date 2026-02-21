@@ -1,19 +1,21 @@
 const AnnouncementBar = () => {
+  const announcements = [
+    'FREE SHIPPING ON ORDERS OVER $200',
+    'HANDCRAFTED IN INDIA – DELIVERED TO USA',
+    'EASY 30-DAY RETURNS',
+    'AUTHENTIC HERITAGE CRAFTSMANSHIP'
+  ];
+
   return (
-    <div className="bg-charcoal overflow-hidden">
-      <div className="flex animate-ticker whitespace-nowrap py-2">
-        {[...Array(2)].map((_, i) => (
-          <div key={i} className="flex items-center gap-8 px-4">
-            <span className="text-xs tracking-[0.2em] uppercase text-primary-foreground/90">Free Shipping on Orders Over $200</span>
-            <span className="text-primary-foreground/40">✦</span>
-            <span className="text-xs tracking-[0.2em] uppercase text-primary-foreground/90">Handcrafted in India · Delivered to USA</span>
-            <span className="text-primary-foreground/40">✦</span>
-            <span className="text-xs tracking-[0.2em] uppercase text-primary-foreground/90">Easy 30-Day Returns</span>
-            <span className="text-primary-foreground/40">✦</span>
-            <span className="text-xs tracking-[0.2em] uppercase text-primary-foreground/90">Authentic Heritage Craftsmanship</span>
-            <span className="text-primary-foreground/40">✦</span>
-          </div>
-        ))}
+    <div className="bg-[#6f4d1e] text-white overflow-hidden">
+      <div className="container-luxury py-2">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          {announcements.map((announcement, idx) => (
+            <span key={idx} className="text-[10px] tracking-[0.15em] uppercase font-medium text-white/95">
+              {announcement}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );

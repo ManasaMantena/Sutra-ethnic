@@ -1,4 +1,4 @@
-import HeroBanner from '@/components/home/HeroBanner';
+import HeroCarousel from '@/components/home/HeroCarousel';
 import ShopByOccasion from '@/components/home/ShopByOccasion';
 import FeaturedCollections from '@/components/home/FeaturedCollections';
 import CollectionBanners from '@/components/home/CollectionBanners';
@@ -8,7 +8,7 @@ import TrustBadges from '@/components/shared/TrustBadges';
 
 const Index = () => (
   <>
-    <HeroBanner />
+    <HeroCarousel />
     <TrustBadges />
     <ShopByOccasion />
     <FeaturedCollections />

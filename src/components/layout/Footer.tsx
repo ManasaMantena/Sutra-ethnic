@@ -6,7 +6,7 @@ const footerLinks = {
     { label: 'Men', href: '/category/men' },
     { label: 'Jewelry', href: '/category/jewelry' },
     { label: 'Wedding', href: '/category/wedding' },
-    { label: 'Festive Edit', href: '/category/festive' },
+    { label: 'Festive', href: '/category/festive' },
     { label: 'Under $150', href: '/category/under-150' },
   ],
   help: [

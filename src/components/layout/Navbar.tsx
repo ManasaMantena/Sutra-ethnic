@@ -33,29 +33,31 @@ const Navbar = () => {
     : [];
 
   return (
-    <header className="sticky top-0 z-50 bg-card border-b border-border">
+    <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
       {/* Main nav */}
       <div className="container-luxury">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="flex items-center justify-between py-6 lg:py-8">
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
-            <h1 className="font-serif text-2xl lg:text-3xl font-semibold tracking-tight text-foreground">
+            <h1 className="font-serif text-3xl lg:text-4xl font-bold tracking-tight text-charcoal">
               SUTRA
             </h1>
           </Link>
 
           {/* Center nav */}
-          <nav className="hidden lg:flex items-center gap-1" onMouseLeave={handleLeave}>
+          <nav className="hidden lg:flex items-center gap-8" onMouseLeave={handleLeave}>
             {navigationData.map((cat) => (
               <div
                 key={cat.label}
                 onMouseEnter={() => handleEnter(cat.label)}
-                className="relative"
+                className="relative group"
               >
                 <Link
                   to={cat.href}
-                  className={`px-4 py-2 text-xs font-medium tracking-[0.15em] uppercase transition-colors ${
-                    activeMega === cat.label ? 'text-primary' : 'text-foreground hover:text-primary'
+                  className={`text-xs font-medium tracking-[0.12em] uppercase transition-colors pb-1 border-b-2 ${
+                    activeMega === cat.label
+                      ? 'text-charcoal border-b-charcoal'
+                      : 'text-charcoal border-b-transparent group-hover:border-b-charcoal'
                   }`}
                 >
                   {cat.label}
@@ -66,7 +68,7 @@ const Navbar = () => {
               <Link
                 key={link.label}
                 to={link.href}
-                className="px-4 py-2 text-xs font-medium tracking-[0.15em] uppercase text-foreground hover:text-primary transition-colors"
+                className="text-xs font-medium tracking-[0.12em] uppercase text-charcoal transition-colors pb-1 border-b-2 border-b-transparent hover:border-b-charcoal"
               >
                 {link.label}
               </Link>
@@ -74,33 +76,33 @@ const Navbar = () => {
           </nav>
 
           {/* Right actions */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-6 lg:gap-8">
             <button
               onClick={() => setSearchOpen(true)}
-              className="p-2 text-foreground hover:text-primary transition-colors"
+              className="text-charcoal hover:text-gray-600 transition-colors"
               aria-label="Search"
             >
               <Search className="h-5 w-5" />
             </button>
-            <Link to="/wishlist" className="p-2 text-foreground hover:text-primary transition-colors relative">
+            <Link to="/wishlist" className="text-charcoal hover:text-gray-600 transition-colors relative">
               <Heart className="h-5 w-5" />
               {wishlistItems.length > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 h-4 w-4 flex items-center justify-center text-[9px] font-bold rounded-full bg-primary text-primary-foreground">
+                <span className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center text-[9px] font-bold rounded-full bg-charcoal text-white">
                   {wishlistItems.length}
                 </span>
               )}
             </Link>
-            <button className="p-2 text-foreground hover:text-primary transition-colors">
+            <button className="text-charcoal hover:text-gray-600 transition-colors">
               <User className="h-5 w-5" />
             </button>
             <button
               onClick={() => openCart(true)}
-              className="p-2 text-foreground hover:text-primary transition-colors relative"
+              className="text-charcoal hover:text-gray-600 transition-colors relative"
               aria-label="Cart"
             >
               <ShoppingBag className="h-5 w-5" />
               {itemCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 h-4 w-4 flex items-center justify-center text-[9px] font-bold rounded-full bg-primary text-primary-foreground">
+                <span className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center text-[9px] font-bold rounded-full bg-charcoal text-white">
                   {itemCount}
                 </span>
               )}
@@ -185,21 +187,21 @@ const MegaMenuContent = ({
   onMouseLeave: () => void;
 }) => (
   <div
-    className="absolute left-0 right-0 bg-card border-b border-border shadow-lg z-50"
+    className="absolute left-0 right-0 bg-white border-b border-gray-200 shadow-md z-50"
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
   >
-    <div className="container-luxury py-8">
-      <div className="grid grid-cols-4 gap-8">
+    <div className="container-luxury py-10">
+      <div className="grid grid-cols-4 gap-12">
         {category.columns.map((col) => (
           <div key={col.title}>
-            <h3 className="text-xs font-semibold tracking-[0.2em] uppercase text-primary mb-4">{col.title}</h3>
-            <ul className="space-y-2.5">
+            <h3 className="text-xs font-bold tracking-[0.15em] uppercase text-charcoal mb-6">{col.title}</h3>
+            <ul className="space-y-3">
               {col.links.map((link) => (
                 <li key={link.label}>
                   <Link
                     to={link.href}
-                    className="text-sm text-foreground hover:text-primary transition-colors"
+                    className="text-sm text-charcoal hover:text-gray-600 transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -209,8 +211,8 @@ const MegaMenuContent = ({
           </div>
         ))}
       </div>
-      <div className="mt-6 pt-6 border-t border-border">
-        <Link to={category.href} className="text-xs font-medium tracking-[0.15em] uppercase text-primary hover:text-accent transition-colors">
+      <div className="mt-8 pt-8 border-t border-gray-200">
+        <Link to={category.href} className="text-xs font-medium tracking-[0.12em] uppercase text-charcoal hover:text-gray-600 transition-colors">
           View All {category.label} →
         </Link>
       </div>

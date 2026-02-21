@@ -137,7 +137,7 @@ export const navigationData: NavCategory[] = [
     ],
   },
   {
-    label: 'Festive Edit',
+    label: 'Festive',
     href: '/category/festive',
     columns: [
       {
