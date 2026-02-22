@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Search, Heart, ShoppingBag, User, X } from 'lucide-react';
 import { navigationData, secondaryNavLinks } from '@/data/navigation';
 import { products } from '@/data/products';
@@ -15,6 +15,7 @@ const Navbar = () => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { setIsOpen: openCart, itemCount } = useCart();
   const { items: wishlistItems } = useWishlist();
+  const location = useLocation();
 
   const handleEnter = (label: string) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -24,6 +25,11 @@ const Navbar = () => {
   const handleLeave = () => {
     timeoutRef.current = setTimeout(() => setActiveMega(null), 150);
   };
+
+  // close mega menu on route change
+  useEffect(() => {
+    setActiveMega(null);
+  }, [location]);
 
   const searchSuggestions = [
     'Banarasi Saree', 'Wedding Lehenga', 'Sherwani', 'Silk Kurta', 'Anarkali',
@@ -92,6 +98,7 @@ const Navbar = () => {
                       ? 'text-charcoal border-b-charcoal'
                       : 'text-charcoal border-b-transparent group-hover:border-b-charcoal'
                   }`}
+                  onClick={() => setActiveMega(null)}
                 >
                   {cat.label}
                 </Link>
@@ -100,12 +107,12 @@ const Navbar = () => {
             {secondaryNavLinks.map((link) => (
               <div
                  key={link.label}
-                // onMouseEnter={() => handleEnter(link.label)}
                 className="relative group"
               >
               <Link
                 key={link.label}
                 to={link.href}
+                onClick={() => setActiveMega(null)}
                 className="text-xs font-medium tracking-[0.12em] uppercase text-charcoal transition-colors pb-1 border-b-2 border-b-transparent hover:border-b-charcoal"
               >
                 {link.label}
@@ -156,6 +163,7 @@ const Navbar = () => {
           category={navigationData.find(c => c.label === activeMega)!}
           onMouseEnter={() => handleEnter(activeMega)}
           onMouseLeave={handleLeave}
+          onLinkClick={() => setActiveMega(null)}
         />
       )}
 
@@ -278,10 +286,12 @@ const MegaMenuContent = ({
   category,
   onMouseEnter,
   onMouseLeave,
+  onLinkClick,
 }: {
   category: NavCategory;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
+  onLinkClick: () => void;
 }) => (
   <div
     className="absolute left-0 right-0 bg-white border-b border-gray-200 shadow-md z-50"
@@ -299,6 +309,7 @@ const MegaMenuContent = ({
                   <Link
                     to={link.href}
                     className="text-sm text-charcoal hover:text-gray-600 transition-colors"
+                    onClick={() => onLinkClick()}
                   >
                     {link.label}
                   </Link>
@@ -309,7 +320,7 @@ const MegaMenuContent = ({
         ))}
       </div>
       <div className="mt-8 pt-8 border-t border-gray-200">
-        <Link to={category.href} className="text-xs font-medium tracking-[0.12em] uppercase text-charcoal hover:text-gray-600 transition-colors">
+        <Link to={category.href} onClick={() => onLinkClick()} className="text-xs font-medium tracking-[0.12em] uppercase text-charcoal hover:text-gray-600 transition-colors">
           View All {category.label} →
         </Link>
       </div>
