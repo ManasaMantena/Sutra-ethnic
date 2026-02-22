@@ -36,7 +36,7 @@ const ScrollToTopButton: React.FC = () => {
         window.scrollTo({ top: 0, behavior: "smooth" })
       }
       className={
-        "fixed bottom-[90px] right-6 z-[55] w-12 h-12 bg-white border border-gray-200 rounded-full shadow transition-transform duration-300 hover:scale-110"
+        "fixed bottom-[90px] right-6 z-[55] w-12 h-12 flex items-center justify-center bg-white border border-gray-200 rounded-full shadow transition-transform duration-300 hover:scale-110"
       }
       style={{
         opacity: visible ? 1 : 0,
