@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ChevronRight, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { products } from '@/data/products';
 import ProductCard from '@/components/product/ProductCard';
+import ComingSoon from '@/components/common/ComingSoon';
 import {
   Select,
   SelectContent,
@@ -33,6 +34,9 @@ const CategoryPage = () => {
   const categoryName = slug
     ? slug.split('/').pop()?.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
     : 'All Products';
+
+  const slugBase = slug ? slug.toLowerCase().split('/').filter(Boolean)[0] : null;
+  const isHomeCategory = slugBase === 'home';
 
   const filtered = useMemo(() => {
     let result = [...products];
@@ -164,101 +168,107 @@ const CategoryPage = () => {
       </div>
 
       <div className="container-luxury pb-20">
-        {/* Toolbar */}
-        <div className="flex items-center justify-between border-t border-b border-border py-3 mb-8">
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 text-xs tracking-wider uppercase text-foreground hover:text-primary transition-colors"
-          >
-            <SlidersHorizontal className="h-4 w-4" />
-            {showFilters ? 'Hide Filters' : 'Show Filters'}
-          </button>
-
-          <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-48 border-0 shadow-none text-xs tracking-wider uppercase bg-transparent">
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent className="bg-card border border-border z-50">
-              <SelectItem value="featured">Featured</SelectItem>
-              <SelectItem value="newest">Newest</SelectItem>
-              <SelectItem value="price-low">Price: Low to High</SelectItem>
-              <SelectItem value="price-high">Price: High to Low</SelectItem>
-              <SelectItem value="rating">Highest Rated</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div className="flex gap-10">
-          {/* Filters sidebar */}
-          {showFilters && (
-            <aside className="w-56 flex-shrink-0 space-y-8">
-              {/* Gender */}
-              <div>
-                <h3 className="text-xs font-semibold tracking-[0.2em] uppercase text-foreground mb-3">Category</h3>
-                <div className="space-y-2">
-                  {genders.map(g => (
-                    <button
-                      key={g}
-                      onClick={() => setGenderFilter(g)}
-                      className={`block text-sm transition-colors ${genderFilter === g ? 'text-primary font-medium' : 'text-muted-foreground hover:text-foreground'}`}
-                    >
-                      {g}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Price */}
-              <div>
-                <h3 className="text-xs font-semibold tracking-[0.2em] uppercase text-foreground mb-3">Price</h3>
-                <div className="space-y-2">
-                  {priceRanges.map((range, i) => (
-                    <button
-                      key={range.label}
-                      onClick={() => setPriceFilter(i)}
-                      className={`block text-sm transition-colors ${priceFilter === i ? 'text-primary font-medium' : 'text-muted-foreground hover:text-foreground'}`}
-                    >
-                      {range.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Fabric */}
-              <div>
-                <h3 className="text-xs font-semibold tracking-[0.2em] uppercase text-foreground mb-3">Fabric</h3>
-                <div className="space-y-2">
-                  {fabrics.map(f => (
-                    <button
-                      key={f}
-                      onClick={() => setFabricFilter(f)}
-                      className={`block text-sm transition-colors ${fabricFilter === f ? 'text-primary font-medium' : 'text-muted-foreground hover:text-foreground'}`}
-                    >
-                      {f}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </aside>
-          )}
-
-          {/* Product grid */}
-          <div className="flex-1">
-            {filtered.length === 0 ? (
-              <div className="text-center py-20">
-                <p className="font-serif text-xl text-foreground mb-2">No products found</p>
-                <p className="text-sm text-muted-foreground">Try adjusting your filters</p>
-              </div>
+            {isHomeCategory ? (
+              <ComingSoon />
             ) : (
-              <div className={`grid gap-6 lg:gap-8 ${showFilters ? 'grid-cols-2 lg:grid-cols-3' : 'grid-cols-2 lg:grid-cols-4'}`}>
-                {filtered.map(product => (
-                  <ProductCard key={product.id} product={product} />
-                ))}
-              </div>
+              <>
+                {/* Toolbar */}
+                <div className="flex items-center justify-between border-t border-b border-border py-3 mb-8">
+                  <button
+                    onClick={() => setShowFilters(!showFilters)}
+                    className="flex items-center gap-2 text-xs tracking-wider uppercase text-foreground hover:text-primary transition-colors"
+                  >
+                    <SlidersHorizontal className="h-4 w-4" />
+                    {showFilters ? 'Hide Filters' : 'Show Filters'}
+                  </button>
+
+                  <Select value={sortBy} onValueChange={setSortBy}>
+                    <SelectTrigger className="w-48 border-0 shadow-none text-xs tracking-wider uppercase bg-transparent">
+                      <SelectValue placeholder="Sort by" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-card border border-border z-50">
+                      <SelectItem value="featured">Featured</SelectItem>
+                      <SelectItem value="newest">Newest</SelectItem>
+                      <SelectItem value="price-low">Price: Low to High</SelectItem>
+                      <SelectItem value="price-high">Price: High to Low</SelectItem>
+                      <SelectItem value="rating">Highest Rated</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="flex gap-10">
+                  {/* Filters sidebar */}
+                  {showFilters && (
+                    <aside className="w-56 flex-shrink-0 space-y-8">
+                      {/* Gender */}
+                      <div>
+                        <h3 className="text-xs font-semibold tracking-[0.2em] uppercase text-foreground mb-3">Category</h3>
+                        <div className="space-y-2">
+                          {genders.map(g => (
+                            <button
+                              key={g}
+                              onClick={() => setGenderFilter(g)}
+                              className={`block text-sm transition-colors ${genderFilter === g ? 'text-primary font-medium' : 'text-muted-foreground hover:text-foreground'}`}
+                            >
+                              {g}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Price */}
+                      <div>
+                        <h3 className="text-xs font-semibold tracking-[0.2em] uppercase text-foreground mb-3">Price</h3>
+                        <div className="space-y-2">
+                          {priceRanges.map((range, i) => (
+                            <button
+                              key={range.label}
+                              onClick={() => setPriceFilter(i)}
+                              className={`block text-sm transition-colors ${priceFilter === i ? 'text-primary font-medium' : 'text-muted-foreground hover:text-foreground'}`}
+                            >
+                              {range.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Fabric */}
+                      <div>
+                        <h3 className="text-xs font-semibold tracking-[0.2em] uppercase text-foreground mb-3">Fabric</h3>
+                        <div className="space-y-2">
+                          {fabrics.map(f => (
+                            <button
+                              key={f}
+                              onClick={() => setFabricFilter(f)}
+                              className={`block text-sm transition-colors ${fabricFilter === f ? 'text-primary font-medium' : 'text-muted-foreground hover:text-foreground'}`}
+                            >
+                              {f}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </aside>
+                  )}
+
+                  {/* Product grid */}
+                  <div className="flex-1">
+                    {filtered.length === 0 ? (
+                      <div className="text-center py-20">
+                        <p className="font-serif text-xl text-foreground mb-2">No products found</p>
+                        <p className="text-sm text-muted-foreground">Try adjusting your filters</p>
+                      </div>
+                    ) : (
+                      <div className={`grid gap-6 lg:gap-8 ${showFilters ? 'grid-cols-2 lg:grid-cols-3' : 'grid-cols-2 lg:grid-cols-4'}`}>
+                        {filtered.map(product => (
+                          <ProductCard key={product.id} product={product} />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </>
             )}
           </div>
-        </div>
-      </div>
     </div>
   );
 };
