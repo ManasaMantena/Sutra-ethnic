@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/contexts/CartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import Layout from "@/components/layout/Layout";
+import FloatingWhatsApp from "@/components/common/FloatingWhatsApp";
+import ScrollToTopButton from "@/components/common/ScrollToTopButton";
 import Index from "./pages/Index";
 import CategoryPage from "./pages/CategoryPage";
 import ProductPage from "./pages/ProductPage";
@@ -36,6 +38,10 @@ const App = () => (
                 <Route path="/story" element={<StoryPage />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
+
+              {/* global floating utilities */}
+              <ScrollToTopButton />
+              <FloatingWhatsApp />
             </Layout>
           </BrowserRouter>
         </WishlistProvider>
