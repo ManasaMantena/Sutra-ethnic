@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
+import hero1 from '../../assets/hero1.jpg';
+import hero2 from '../../assets/hero2.jpg';
+import hero3 from '../../assets/hero3.jpg';
 interface Slide {
   id: number;
   type: 'video' | 'image';
@@ -20,7 +22,9 @@ const slides: Slide[] = [
   {
     id: 1,
     type: 'image',
-   src:'https://i.pinimg.com/1200x/3f/2c/9b/3f2c9b256fe8386fd6a099ca2544d20a.jpg',    
+    src:hero3,
+    // src:'https://i.pinimg.com/originals/e0/f0/04/e0f0049002282d7fd43cf3238b0b9893.jpg',
+    
     tag: 'Heritage Reimagined',
     title: 'Where Craft Meets Soul',
     description: "India's finest handcrafted ethnic wear, curated for the modern diaspora.",
@@ -29,7 +33,8 @@ const slides: Slide[] = [
   {
     id: 2,
     type: 'image',
-    src: 'https://i.pinimg.com/1200x/c7/ce/b8/c7ceb8fac67d9b7957241bdb1b7e4038.jpg',
+    src:hero2,
+    // src: 'https://c.ndtvimg.com/2024-08/ks0ru4lg_fashion_625x300_14_August_24.jpg?im=FeatureCrop,algorithm=dnn,width=1200,height=675?ver-20240615.100',
     tag: 'Timeless Collection',
     title: 'Ethnic Women Collection',
     description: 'Discover exquisite sarees and lehengas for every occasion.',
