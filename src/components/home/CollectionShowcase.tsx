@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const categoryPreviews = [
-  { label: 'Gifting', href: '/category/gifting', image: 'https://images.unsplash.com/photo-1607623814075-e51df1bdc82f?w=300&q=80' },
-  { label: 'Jewelry', href: '/category/jewelry', image: 'https://images.unsplash.com/photo-1603569283847-aa295f0d016a?w=300&q=80' },
+  { label: 'Gifting', href: '/category/gifting', image: 'https://i.pinimg.com/1200x/9f/d3/a1/9fd3a1d5d822ba883672ab535ac0af48.jpg' },
+  { label: 'Jewelry', href: '/category/jewelry', image: 'https://i.pinimg.com/1200x/98/c0/23/98c02301aacaec39c7e1d0e4cffe2431.jpg' },
   { label: 'Festive', href: '/category/festive', image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=300&q=80' },
-  { label: 'Home', href: '/category/home', image: 'https://images.unsplash.com/photo-1595521624512-1b0fb86e7c49?w=300&q=80' },
-  { label: 'Women', href: '/category/women', image: 'https://images.unsplash.com/photo-1615572320829-c6fb7f5a9869?w=300&q=80' },
-  { label: 'Men', href: '/category/men', image: 'https://images.unsplash.com/photo-1622445275576-721325763afe?w=300&q=80' },
+  { label: 'Home', href: '/category/home', image: 'https://i.pinimg.com/736x/96/41/f3/9641f38cfcb7c947f1f284556de3dd93.jpg' },
+  { label: 'Women', href: '/category/women', image: 'https://i.pinimg.com/1200x/7c/ed/c0/7cedc084e0efcf749b3e7fd2908be703.jpg' },
+  { label: 'Men', href: '/category/men', image: 'https://i.pinimg.com/736x/b5/02/57/b50257353d39f09b6ff8831f1be17a53.jpg' },
 ];
 
 const CollectionShowcase = () => {
