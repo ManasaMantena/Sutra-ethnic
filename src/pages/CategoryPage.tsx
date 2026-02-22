@@ -23,6 +23,128 @@ const priceRanges = [
 ];
 const genders = ['All', 'Women', 'Men'];
 
+// helper used by component and tests to derive filtered product list
+export function filterProducts(
+  productsList: typeof products,
+  slug: string | undefined,
+  genderFilter: string,
+  fabricFilter: string,
+  priceFilter: number,
+  sortBy: string
+) {
+  let result = [...productsList];
+  const slugParts = slug ? slug.toLowerCase().split('/').filter(Boolean) : [];
+
+  if (slugParts.length > 0) {
+    const mainCategory = slugParts[0];
+
+    if (mainCategory === 'women' || mainCategory === 'men') {
+      result = result.filter(p => p.gender === mainCategory);
+
+      if (slugParts[1] === 'sarees') {
+        result = result.filter(p => p.category === 'Sarees');
+        if (slugParts[2]) {
+          const fabricType = slugParts[2].replace(/-/g, ' ');
+          result = result.filter(p =>
+            p.subcategory?.toLowerCase().includes(fabricType.toLowerCase()) ||
+            p.fabric?.toLowerCase().includes(fabricType.toLowerCase())
+          );
+        }
+      } else if (slugParts[1] === 'lehengas') {
+        result = result.filter(p => p.category === 'Lehengas');
+        if (slugParts[2]) {
+          const type = slugParts[2].replace(/-/g, ' ');
+          result = result.filter(p => p.subcategory?.toLowerCase().includes(type.toLowerCase()));
+        }
+      } else if (slugParts[1] === 'sherwanis') {
+        result = result.filter(p => p.category === 'Sherwanis');
+        if (slugParts[2]) {
+          const type = slugParts[2].replace(/-/g, ' ');
+          result = result.filter(p => p.subcategory?.toLowerCase().includes(type.toLowerCase()));
+        }
+      } else if (slugParts[1] === 'kurtas') {
+        result = result.filter(p => p.category === 'Kurtas');
+        if (slugParts[2]) {
+          const type = slugParts[2].replace(/-/g, ' ');
+          result = result.filter(p =>
+            p.subcategory?.toLowerCase().includes(type.toLowerCase()) ||
+            p.fabric?.toLowerCase().includes(type.toLowerCase())
+          );
+        }
+      } else if (slugParts[1] === 'suits') {
+        result = result.filter(p => p.category === 'Suits');
+        if (slugParts[2]) {
+          const type = slugParts[2].replace(/-/g, ' ');
+          result = result.filter(p => p.subcategory?.toLowerCase().includes(type.toLowerCase()));
+        }
+      } else if (slugParts[1] === 'indo-western') {
+        result = result.filter(p => p.category === 'Indo-Western');
+        if (slugParts[2]) {
+          const type = slugParts[2].replace(/-/g, ' ');
+          result = result.filter(p => p.subcategory?.toLowerCase().includes(type.toLowerCase()));
+        }
+      } else if (slugParts[1] === 'occasion') {
+        if (slugParts[2]) {
+          const occasion = slugParts[2].replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+          result = result.filter(p => p.occasion.some(o => o.toLowerCase().includes(occasion.toLowerCase())));
+        }
+      }
+    } else if (mainCategory === 'jewelry') {
+      // use case-insensitive comparison to avoid mismatches
+      result = result.filter(p => p.category.toLowerCase() === 'jewellery');
+      if (slugParts[1]) {
+        const type = slugParts[1].replace(/-/g, ' ');
+        result = result.filter(p => p.subcategory?.toLowerCase().includes(type.toLowerCase()));
+      }
+    } else if (mainCategory === 'wedding') {
+      result = result.filter(p => p.occasion.some(o => o.toLowerCase().includes('wedding')));
+      if (slugParts[1]) {
+        const type = slugParts[1].replace(/-/g, ' ');
+        result = result.filter(p =>
+          p.subcategory?.toLowerCase().includes(type.toLowerCase()) ||
+          p.category?.toLowerCase().includes(type.toLowerCase())
+        );
+      }
+    } else if (mainCategory === 'festive') {
+      result = result.filter(p => p.occasion.some(o => ['festival', 'diwali', 'navratri', 'eid', 'pongal', 'onam'].some(occ => o.toLowerCase().includes(occ))));
+      if (slugParts[1]) {
+        const type = slugParts[1].replace(/-/g, ' ');
+        result = result.filter(p =>
+          p.subcategory?.toLowerCase().includes(type.toLowerCase()) ||
+          p.tags?.some(t => t.toLowerCase().includes(type.toLowerCase()))
+        );
+      }
+    } else if (mainCategory === 'gifting') {
+      // only include products whose primary category is exactly "Gifting" (case-insensitive)
+      result = result.filter(p => p.category.toLowerCase() === 'gifting');
+    } else if (mainCategory === 'under-150') {
+      result = result.filter(p => p.price < 150);
+    } else if (mainCategory === 'nri-favorites') {
+      result = result.filter(p => p.tags?.some(t => t.toLowerCase().includes('bestseller')) || p.rating >= 4.7);
+    }
+  }
+
+  if (genderFilter !== 'All') {
+    result = result.filter(p => p.gender === genderFilter.toLowerCase());
+  }
+
+  if (fabricFilter !== 'All') {
+    result = result.filter(p => p.fabric.toLowerCase().includes(fabricFilter.toLowerCase()));
+  }
+
+  const range = priceRanges[priceFilter];
+  result = result.filter(p => p.price >= range.min && p.price < range.max);
+
+  switch (sortBy) {
+    case 'price-low': result.sort((a, b) => a.price - b.price); break;
+    case 'price-high': result.sort((a, b) => b.price - a.price); break;
+    case 'newest': result.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0)); break;
+    case 'rating': result.sort((a, b) => b.rating - a.rating); break;
+  }
+
+  return result;
+}
+
 const CategoryPage = () => {
   const { '*': slug } = useParams();
   const [sortBy, setSortBy] = useState('featured');
@@ -38,117 +160,10 @@ const CategoryPage = () => {
   const slugBase = slug ? slug.toLowerCase().split('/').filter(Boolean)[0] : null;
   const isHomeCategory = slugBase === 'home';
 
-  const filtered = useMemo(() => {
-    let result = [...products];
-    const slugParts = slug ? slug.toLowerCase().split('/').filter(Boolean) : [];
-
-    if (slugParts.length > 0) {
-      const mainCategory = slugParts[0];
-
-      if (mainCategory === 'women' || mainCategory === 'men') {
-        result = result.filter(p => p.gender === mainCategory);
-
-        if (slugParts[1] === 'sarees') {
-          result = result.filter(p => p.category === 'Sarees');
-          if (slugParts[2]) {
-            const fabricType = slugParts[2].replace(/-/g, ' ');
-            result = result.filter(p =>
-              p.subcategory?.toLowerCase().includes(fabricType.toLowerCase()) ||
-              p.fabric?.toLowerCase().includes(fabricType.toLowerCase())
-            );
-          }
-        } else if (slugParts[1] === 'lehengas') {
-          result = result.filter(p => p.category === 'Lehengas');
-          if (slugParts[2]) {
-            const type = slugParts[2].replace(/-/g, ' ');
-            result = result.filter(p => p.subcategory?.toLowerCase().includes(type.toLowerCase()));
-          }
-        } else if (slugParts[1] === 'sherwanis') {
-          result = result.filter(p => p.category === 'Sherwanis');
-          if (slugParts[2]) {
-            const type = slugParts[2].replace(/-/g, ' ');
-            result = result.filter(p => p.subcategory?.toLowerCase().includes(type.toLowerCase()));
-          }
-        } else if (slugParts[1] === 'kurtas') {
-          result = result.filter(p => p.category === 'Kurtas');
-          if (slugParts[2]) {
-            const type = slugParts[2].replace(/-/g, ' ');
-            result = result.filter(p =>
-              p.subcategory?.toLowerCase().includes(type.toLowerCase()) ||
-              p.fabric?.toLowerCase().includes(type.toLowerCase())
-            );
-          }
-        } else if (slugParts[1] === 'suits') {
-          result = result.filter(p => p.category === 'Suits');
-          if (slugParts[2]) {
-            const type = slugParts[2].replace(/-/g, ' ');
-            result = result.filter(p => p.subcategory?.toLowerCase().includes(type.toLowerCase()));
-          }
-        } else if (slugParts[1] === 'indo-western') {
-          result = result.filter(p => p.category === 'Indo-Western');
-          if (slugParts[2]) {
-            const type = slugParts[2].replace(/-/g, ' ');
-            result = result.filter(p => p.subcategory?.toLowerCase().includes(type.toLowerCase()));
-          }
-        } else if (slugParts[1] === 'occasion') {
-          if (slugParts[2]) {
-            const occasion = slugParts[2].replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-            result = result.filter(p => p.occasion.some(o => o.toLowerCase().includes(occasion.toLowerCase())));
-          }
-        }
-      } else if (mainCategory === 'jewelry') {
-        result = result.filter(p => p.category === 'Jewellery');
-        if (slugParts[1]) {
-          const type = slugParts[1].replace(/-/g, ' ');
-          result = result.filter(p => p.subcategory?.toLowerCase().includes(type.toLowerCase()));
-        }
-      } else if (mainCategory === 'wedding') {
-        result = result.filter(p => p.occasion.some(o => o.toLowerCase().includes('wedding')));
-        if (slugParts[1]) {
-          const type = slugParts[1].replace(/-/g, ' ');
-          result = result.filter(p =>
-            p.subcategory?.toLowerCase().includes(type.toLowerCase()) ||
-            p.category?.toLowerCase().includes(type.toLowerCase())
-          );
-        }
-      } else if (mainCategory === 'festive') {
-        result = result.filter(p => p.occasion.some(o => ['festival', 'diwali', 'navratri', 'eid', 'pongal', 'onam'].some(occ => o.toLowerCase().includes(occ))));
-        if (slugParts[1]) {
-          const type = slugParts[1].replace(/-/g, ' ');
-          result = result.filter(p =>
-            p.subcategory?.toLowerCase().includes(type.toLowerCase()) ||
-            p.tags?.some(t => t.toLowerCase().includes(type.toLowerCase()))
-          );
-        }
-      } else if (mainCategory === 'gifting') {
-        result = result.filter(p => p.price <= 250 || p.tags?.some(t => t.toLowerCase().includes('gift')));
-      } else if (mainCategory === 'under-150') {
-        result = result.filter(p => p.price < 150);
-      } else if (mainCategory === 'nri-favorites') {
-        result = result.filter(p => p.tags?.some(t => t.toLowerCase().includes('bestseller')) || p.rating >= 4.7);
-      }
-    }
-
-    if (genderFilter !== 'All') {
-      result = result.filter(p => p.gender === genderFilter.toLowerCase());
-    }
-
-    if (fabricFilter !== 'All') {
-      result = result.filter(p => p.fabric.toLowerCase().includes(fabricFilter.toLowerCase()));
-    }
-
-    const range = priceRanges[priceFilter];
-    result = result.filter(p => p.price >= range.min && p.price < range.max);
-
-    switch (sortBy) {
-      case 'price-low': result.sort((a, b) => a.price - b.price); break;
-      case 'price-high': result.sort((a, b) => b.price - a.price); break;
-      case 'newest': result.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0)); break;
-      case 'rating': result.sort((a, b) => b.rating - a.rating); break;
-    }
-
-    return result;
-  }, [slug, sortBy, fabricFilter, priceFilter, genderFilter]);
+  const filtered = useMemo(() =>
+    filterProducts(products, slug, genderFilter, fabricFilter, priceFilter, sortBy),
+    [slug, sortBy, fabricFilter, priceFilter, genderFilter]
+  );
 
   return (
     <div>
