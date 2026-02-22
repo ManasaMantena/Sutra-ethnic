@@ -1,7 +1,9 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Heart, ShoppingBag, User, X } from 'lucide-react';
 import { navigationData, secondaryNavLinks } from '@/data/navigation';
+import { products } from '@/data/products';
+import { searchProducts } from '@/utils/searchEngine';
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import type { NavCategory } from '@/types';
@@ -31,6 +33,37 @@ const Navbar = () => {
   const filteredSuggestions = searchQuery.length > 0
     ? searchSuggestions.filter(s => s.toLowerCase().includes(searchQuery.toLowerCase()))
     : [];
+
+  // instant result buckets
+  const [instantResults, setInstantResults] = useState<{
+    products: typeof products;
+    categories: { label: string; href: string }[];
+    artisans: any[];
+    articles: any[];
+  }>({ products: [], categories: [], artisans: [], articles: [] });
+
+  const findCategoryMatches = (q: string) => {
+    const allLinks: { label: string; href: string }[] = [];
+    navigationData.forEach(cat => {
+      allLinks.push({ label: cat.label, href: cat.href });
+      cat.columns.forEach(col => {
+        col.links.forEach(l => allLinks.push({ label: l.label, href: l.href }));
+      });
+    });
+    secondaryNavLinks.forEach(l => allLinks.push(l));
+    return allLinks.filter(link => link.label.toLowerCase().includes(q));
+  };
+
+  // recalc results when query changes
+  useEffect(() => {
+    if (searchQuery.length >= 3) {
+      const prods = searchProducts(searchQuery, products);
+      const cats = findCategoryMatches(searchQuery.toLowerCase());
+      setInstantResults({ products: prods, categories: cats, artisans: [], articles: [] });
+    } else {
+      setInstantResults({ products: [], categories: [], artisans: [], articles: [] });
+    }
+  }, [searchQuery]);
 
   return (
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
@@ -145,13 +178,17 @@ const Navbar = () => {
                   <X className="h-5 w-5" />
                 </button>
               </div>
-              {filteredSuggestions.length > 0 && (
+              {/* query less than 3 characters - show keyword suggestions */}
+              {searchQuery.length > 0 && searchQuery.length < 3 && filteredSuggestions.length > 0 && (
                 <div className="py-4 space-y-2">
-                  {filteredSuggestions.map(s => (
+                  {filteredSuggestions.map((s) => (
                     <Link
                       key={s}
                       to={`/category/search?q=${encodeURIComponent(s)}`}
-                      onClick={() => { setSearchOpen(false); setSearchQuery(''); }}
+                      onClick={() => {
+                        setSearchOpen(false);
+                        setSearchQuery('');
+                      }}
                       className="block py-2 text-sm text-foreground hover:text-primary transition-colors"
                     >
                       {s}
@@ -159,11 +196,65 @@ const Navbar = () => {
                   ))}
                 </div>
               )}
+
+              {/* instant semantic dropdown triggered after 3+ chars */}
+              {searchQuery.length >= 3 && (
+                <div className="py-4 space-y-4">
+                  {instantResults.products.length > 0 && (
+                    <div>
+                      <p className="text-xs font-semibold uppercase text-muted-foreground mb-2">
+                        Products
+                      </p>
+                      <div className="space-y-2">
+                        {instantResults.products.slice(0, 6).map((p) => (
+                          <Link
+                            key={p.id}
+                            to={`/product/${p.slug}`}
+                            onClick={() => {
+                              setSearchOpen(false);
+                              setSearchQuery('');
+                            }}
+                            className="block py-2 text-sm text-foreground hover:text-primary transition-colors"
+                          >
+                            {p.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {instantResults.categories.length > 0 && (
+                    <div>
+                      <p className="text-xs font-semibold uppercase text-muted-foreground mb-2">
+                        Categories
+                      </p>
+                      <div className="space-y-2">
+                        {instantResults.categories.slice(0, 6).map((c) => (
+                          <Link
+                            key={c.href}
+                            to={c.href}
+                            onClick={() => {
+                              setSearchOpen(false);
+                              setSearchQuery('');
+                            }}
+                            className="block py-2 text-sm text-foreground hover:text-primary transition-colors"
+                          >
+                            {c.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {instantResults.products.length === 0 && instantResults.categories.length === 0 && (
+                    <p className="text-sm text-muted-foreground">No results found</p>
+                  )}
+                </div>
+              )}
+
               {searchQuery.length === 0 && (
                 <div className="py-8">
                   <p className="subheading mb-4">Popular Searches</p>
                   <div className="flex flex-wrap gap-2">
-                    {searchSuggestions.map(s => (
+                    {searchSuggestions.map((s) => (
                       <button
                         key={s}
                         onClick={() => setSearchQuery(s)}

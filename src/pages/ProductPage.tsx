@@ -6,6 +6,7 @@ import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import ProductCard from '@/components/product/ProductCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import SizeGuideModal from '@/components/common/SizeGuideModal';
 
 const ProductPage = () => {
   const { slug } = useParams();
@@ -16,6 +17,8 @@ const ProductPage = () => {
 
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
   const [quantity, setQuantity] = useState(1);
+  // size guide modal state
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
 
   const relatedProducts = products.filter(p => p.id !== product.id && p.gender === product.gender).slice(0, 4);
 
@@ -94,7 +97,12 @@ const ProductPage = () => {
             <div className="mb-6">
               <div className="flex items-center justify-between mb-3">
                 <p className="text-xs font-semibold tracking-[0.2em] uppercase text-foreground">Size</p>
-                <button className="text-xs text-primary underline">Size Guide</button>
+                <button
+                  className="text-xs text-primary underline"
+                  onClick={() => setSizeGuideOpen(true)}
+                >
+                  Size Guide
+                </button>
               </div>
               <div className="flex flex-wrap gap-2">
                 {product.sizes.map(size => (
@@ -230,7 +238,10 @@ const ProductPage = () => {
           </Tabs>
         </div>
 
-        {/* Complete the Look */}
+        {/* size guide modal */}
+      <SizeGuideModal open={sizeGuideOpen} onClose={() => setSizeGuideOpen(false)} />
+
+      {/* Complete the Look */}
         {relatedProducts.length > 0 && (
           <div className="mt-20">
             <div className="text-center mb-12">

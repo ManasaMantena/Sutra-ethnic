@@ -1,7 +1,8 @@
 import { useState, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { ChevronRight, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { products } from '@/data/products';
+import { searchProducts } from '@/utils/searchEngine';
 import ProductCard from '@/components/product/ProductCard';
 import ComingSoon from '@/components/common/ComingSoon';
 import {
@@ -147,23 +148,33 @@ export function filterProducts(
 
 const CategoryPage = () => {
   const { '*': slug } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const searchQuery = queryParams.get('q') || '';
+
   const [sortBy, setSortBy] = useState('featured');
   const [fabricFilter, setFabricFilter] = useState('All');
   const [priceFilter, setPriceFilter] = useState(0);
   const [genderFilter, setGenderFilter] = useState('All');
   const [showFilters, setShowFilters] = useState(true);
 
-  const categoryName = slug
-    ? slug.split('/').pop()?.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
-    : 'All Products';
+  const isSearch = slug?.toLowerCase().startsWith('search');
+  const categoryName = isSearch
+    ? `Search results for "${searchQuery}"`
+    : slug
+      ? slug.split('/').pop()?.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+      : 'All Products';
 
   const slugBase = slug ? slug.toLowerCase().split('/').filter(Boolean)[0] : null;
   const isHomeCategory = slugBase === 'home';
 
-  const filtered = useMemo(() =>
-    filterProducts(products, slug, genderFilter, fabricFilter, priceFilter, sortBy),
-    [slug, sortBy, fabricFilter, priceFilter, genderFilter]
-  );
+  const filtered = useMemo(() => {
+    if (isSearch) {
+      // semantic/keyword search result page
+      return searchProducts(searchQuery, products);
+    }
+    return filterProducts(products, slug, genderFilter, fabricFilter, priceFilter, sortBy);
+  }, [slug, sortBy, fabricFilter, priceFilter, genderFilter, searchQuery, isSearch]);
 
   return (
     <div>
