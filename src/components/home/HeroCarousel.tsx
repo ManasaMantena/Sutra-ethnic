@@ -20,7 +20,7 @@ const slides: Slide[] = [
   {
     id: 1,
     type: 'image',
-   src:'https://i.pinimg.com/1200x/c0/a7/08/c0a708787e03cd9d1262611f726b9555.jpg',    
+   src:'https://i.pinimg.com/1200x/3f/2c/9b/3f2c9b256fe8386fd6a099ca2544d20a.jpg',    
     tag: 'Heritage Reimagined',
     title: 'Where Craft Meets Soul',
     description: "India's finest handcrafted ethnic wear, curated for the modern diaspora.",
@@ -29,7 +29,7 @@ const slides: Slide[] = [
   {
     id: 2,
     type: 'image',
-    src: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=1200&q=80',
+    src: 'https://i.pinimg.com/1200x/c7/ce/b8/c7ceb8fac67d9b7957241bdb1b7e4038.jpg',
     tag: 'Timeless Collection',
     title: 'Ethnic Women Collection',
     description: 'Discover exquisite sarees and lehengas for every occasion.',
@@ -38,9 +38,7 @@ const slides: Slide[] = [
   {
     id: 3,
     type: 'image',
-    src:'https://i.pinimg.com/736x/eb/de/69/ebde69289f4add1455bc0b6b815d4c6d.jpg',
-    // src:'https://i.pinimg.com/736x/f5/9b/66/f59b66c1d7c31e071b010bf8bd953c19.jpg',
-    // src: 'https://images.unsplash.com/photo-1622445275576-721325763afe?w=1200&q=80',
+    src:'https://i.pinimg.com/1200x/5a/45/73/5a4573a351c2833e6536818f10d9c453.jpg',
     tag: 'Artisan Crafted',
     title: 'Men Ethnic Collection',
     description: 'Experience the mastery of traditional Indian craftsmanship.',
@@ -58,7 +56,7 @@ const slides: Slide[] = [
   {
     id: 5,
     type: 'image',
-    src: 'https://i.pinimg.com/1200x/25/eb/02/25eb02f04b52e475fa6072561de94711.jpg',
+    src: 'https://i.pinimg.com/736x/4b/84/2c/4b842c8c4a0a5f8fe28b47fc4b8d07a5.jpg',
     tag: 'Festive Gifting',
     title: 'Gifting Collection',
     description: 'Perfect gifts for your loved ones, wrapped in tradition.',
