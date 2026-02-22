@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import type { Product } from '@/types';
 
 interface WishlistContextType {
@@ -10,9 +10,33 @@ interface WishlistContextType {
 }
 
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
+const WISHLIST_STORAGE_KEY = 'sutra-wishlist';
 
 export const WishlistProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<Product[]>([]);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(WISHLIST_STORAGE_KEY);
+      if (saved) {
+        setItems(JSON.parse(saved));
+      }
+    } catch (error) {
+      console.error('Failed to load wishlist from localStorage:', error);
+    }
+    setIsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (isHydrated) {
+      try {
+        localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(items));
+      } catch (error) {
+        console.error('Failed to save wishlist to localStorage:', error);
+      }
+    }
+  }, [items, isHydrated]);
 
   const addItem = useCallback((product: Product) => {
     setItems(prev => prev.some(p => p.id === product.id) ? prev : [...prev, product]);

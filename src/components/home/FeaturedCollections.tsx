@@ -14,7 +14,7 @@ const FeaturedCollections = () => {
           <div className="divider-gold mt-6" />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {trending.map((product, idx) => (
             <motion.div
               key={product.id}
@@ -25,32 +25,36 @@ const FeaturedCollections = () => {
             >
               <Link
                 to={`/product/${product.slug}`}
-                className="group relative block overflow-hidden rounded-lg h-80 bg-white shadow-md hover:shadow-xl transition-all duration-300"
+                className="group flex gap-4 p-4 rounded-lg hover:bg-white/50 transition-all duration-300"
               >
-                {product.images && product.images[0] ? (
-                  <img
-                    src={product.images[0]}
-                    alt={product.name}
-                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                ) : (
-                  <div className="absolute inset-0 w-full h-full bg-gray-200 flex items-center justify-center">
-                    <span className="text-sm text-gray-400">No image</span>
-                  </div>
-                )}
+                <div className="w-24 h-24 flex-shrink-0 overflow-hidden rounded-lg">
+                  {product.images && product.images[0] ? (
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      loading="lazy"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <span className="text-xs text-gray-400">No image</span>
+                    </div>
+                  )}
+                </div>
                 
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                
-                <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
-                  <h3 className="font-serif text-lg text-cream mb-2 line-clamp-2">
+                <div className="flex-1 flex flex-col justify-center py-2">
+                  <h3 className="font-serif text-base text-charcoal group-hover:text-gold transition-colors line-clamp-2">
                     {product.name}
                   </h3>
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-semibold text-gold">
+                  <p className="text-xs text-muted-foreground mt-2 line-clamp-1">
+                    {product.fabric}
+                  </p>
+                  <div className="flex items-center justify-between mt-3">
+                    <span className="text-lg font-semibold text-gold">
                       ${product.price}
                     </span>
-                    <span className="text-xs text-cream/60">
-                      ★ 4.8
+                    <span className="text-xs text-gold flex items-center gap-1">
+                      ★ {product.rating || 4.8}
                     </span>
                   </div>
                 </div>

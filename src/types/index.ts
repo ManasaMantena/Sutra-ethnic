@@ -13,11 +13,11 @@ export interface Product {
   sizes: string[];
   occasion: string[];
   description: string;
-  craftStory: string;
-  fabricDetails: string;
-  artisanNote: string;
-  culturalMeaning: string;
-  stylingGuide: string;
+  craftStory?: string;
+  fabricDetails?: string;
+  artisanNote?: string;
+  culturalMeaning?: string;
+  stylingGuide?: string;
   rating: number;
   reviewCount: number;
   isNew?: boolean;
