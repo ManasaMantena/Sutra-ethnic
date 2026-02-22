@@ -19,8 +19,8 @@ interface Slide {
 const slides: Slide[] = [
   {
     id: 1,
-    type: 'video',
-    src: 'https://cdn.coverr.co/videos/coverr-weaving-on-a-loom-9714/1080p.mp4',
+    type: 'image',
+   src:'https://i.pinimg.com/1200x/c0/a7/08/c0a708787e03cd9d1262611f726b9555.jpg',    
     tag: 'Heritage Reimagined',
     title: 'Where Craft Meets Soul',
     description: "India's finest handcrafted ethnic wear, curated for the modern diaspora.",
@@ -29,47 +29,40 @@ const slides: Slide[] = [
   {
     id: 2,
     type: 'image',
-    src: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c',
+    src: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=1200&q=80',
     tag: 'Timeless Collection',
-    title: 'Ethnic Wear Collection',
+    title: 'Ethnic Women Collection',
     description: 'Discover exquisite sarees and lehengas for every occasion.',
     cta: { text: 'Shop Women', href: '/category/women' }
   },
   {
     id: 3,
     type: 'image',
-    src: 'https://images.unsplash.com/photo-1622445275576-721325763afe',
+    src:'https://i.pinimg.com/736x/eb/de/69/ebde69289f4add1455bc0b6b815d4c6d.jpg',
+    // src:'https://i.pinimg.com/736x/f5/9b/66/f59b66c1d7c31e071b010bf8bd953c19.jpg',
+    // src: 'https://images.unsplash.com/photo-1622445275576-721325763afe?w=1200&q=80',
     tag: 'Artisan Crafted',
-    title: 'Threading & Artisan Craft',
+    title: 'Men Ethnic Collection',
     description: 'Experience the mastery of traditional Indian craftsmanship.',
-    cta: { text: 'Shop Now', href: '/category/women' }
+    cta: { text: 'Shop Men', href: '/category/men' }
   },
   {
     id: 4,
     type: 'image',
-    src: 'https://images.unsplash.com/photo-1603569283847-aa295f0d016a',
-    tag: 'Premium Selection',
-    title: 'Gifting Collection',
-    description: 'Perfect gifts for your loved ones, wrapped in tradition.',
-    cta: { text: 'Shop Now', href: '/category/gifting' }
-  },
-  {
-    id: 5,
-    type: 'image',
-    src: 'https://images.unsplash.com/photo-1622445275576-721325763afe',
-    tag: 'Bold & Refined',
-    title: 'Men Ethnic Wear',
-    description: 'Sherwanis, kurtas, and indo-western styles that command presence.',
-    cta: { text: 'Shop Men', href: '/category/men' }
-  },
-  {
-    id: 6,
-    type: 'image',
-    src: 'https://images.unsplash.com/photo-1593032465171-8e7f4d92a76d',
+    src: 'https://i.pinimg.com/1200x/e1/94/3e/e1943e20b449965602b0dfd42c2156fe.jpg',
     tag: 'Bridal Elegance',
     title: 'Wedding Collection',
     description: 'Celebrate your special day with authentic heritage pieces.',
     cta: { text: 'Shop Wedding', href: '/category/wedding' }
+  },
+  {
+    id: 5,
+    type: 'image',
+    src: 'https://i.pinimg.com/1200x/25/eb/02/25eb02f04b52e475fa6072561de94711.jpg',
+    tag: 'Festive Gifting',
+    title: 'Gifting Collection',
+    description: 'Perfect gifts for your loved ones, wrapped in tradition.',
+    cta: { text: 'Shop Gifting', href: '/category/gifting' }
   }
 ];
 
@@ -128,7 +121,7 @@ const HeroCarousel = () => {
               className="w-full h-full object-cover"
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-r from-charcoal/60 via-charcoal/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-charcoal/40 to-transparent" />
         </motion.div>
       </AnimatePresence>
 

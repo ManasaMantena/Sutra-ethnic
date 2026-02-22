@@ -1,34 +1,9 @@
 import { Link } from 'react-router-dom';
-import { useRef, useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { products } from '@/data/products';
 
 const FeaturedCollections = () => {
-  const trending = products.filter(p => p.isBestseller || p.isNew).slice(0, 8);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
-
-  useEffect(() => {
-    if (!isAutoScrolling || !scrollContainerRef.current) return;
-
-    const container = scrollContainerRef.current;
-    let animationFrameId: number;
-    let scrollPos = 0;
-
-    const autoScroll = () => {
-      if (container) {
-        scrollPos += 0.3;
-        if (scrollPos > container.scrollWidth - container.clientWidth) {
-          scrollPos = 0;
-        }
-        container.scrollLeft = scrollPos;
-      }
-      animationFrameId = requestAnimationFrame(autoScroll);
-    };
-
-    animationFrameId = requestAnimationFrame(autoScroll);
-
-    return () => cancelAnimationFrame(animationFrameId);
-  }, [isAutoScrolling]);
+  const trending = products.filter(p => p.isBestseller || p.isNew).slice(0, 6);
 
   return (
     <section className="bg-cream-dark">
@@ -39,39 +14,48 @@ const FeaturedCollections = () => {
           <div className="divider-gold mt-6" />
         </div>
 
-        <div
-          ref={scrollContainerRef}
-          onMouseEnter={() => setIsAutoScrolling(false)}
-          onMouseLeave={() => setIsAutoScrolling(true)}
-          className="flex gap-6 overflow-x-auto scrollbar-hide pb-4"
-          style={{ scrollBehavior: 'smooth' }}
-        >
-          {trending.map((product) => (
-            <Link
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+          {trending.map((product, idx) => (
+            <motion.div
               key={product.id}
-              to={`/product/${product.slug}`}
-              className="group flex-shrink-0 flex items-center gap-4 px-6 py-4 rounded-full bg-white border border-gray-200 shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-300 h-24 whitespace-nowrap"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.1 }}
+              viewport={{ once: true, margin: '-100px' }}
             >
-              {product.images && product.images[0] ? (
-                <img
-                  src={product.images[0]}
-                  alt={product.name}
-                  className="h-14 w-14 rounded-full object-cover group-hover:scale-110 transition-transform duration-300"
-                />
-              ) : (
-                <div className="h-14 w-14 rounded-full bg-gray-200 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-xs text-gray-400">No image</span>
+              <Link
+                to={`/product/${product.slug}`}
+                className="group relative block overflow-hidden rounded-lg h-80 bg-white shadow-md hover:shadow-xl transition-all duration-300"
+              >
+                {product.images && product.images[0] ? (
+                  <img
+                    src={product.images[0]}
+                    alt={product.name}
+                    className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="absolute inset-0 w-full h-full bg-gray-200 flex items-center justify-center">
+                    <span className="text-sm text-gray-400">No image</span>
+                  </div>
+                )}
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                
+                <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-8 group-hover:translate-y-0 transition-transform duration-300">
+                  <h3 className="font-serif text-lg text-cream mb-2 line-clamp-2">
+                    {product.name}
+                  </h3>
+                  <div className="flex items-center justify-between">
+                    <span className="text-2xl font-semibold text-gold">
+                      ${product.price}
+                    </span>
+                    <span className="text-xs text-cream/60">
+                      ★ 4.8
+                    </span>
+                  </div>
                 </div>
-              )}
-              <div className="flex flex-col gap-1">
-                <span className="text-sm font-medium text-charcoal group-hover:text-gray-600 transition-colors line-clamp-2">
-                  {product.name}
-                </span>
-                <span className="text-xs text-gold font-semibold">
-                  ${product.price}
-                </span>
-              </div>
-            </Link>
+              </Link>
+            </motion.div>
           ))}
         </div>
 

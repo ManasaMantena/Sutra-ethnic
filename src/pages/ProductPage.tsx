@@ -44,7 +44,8 @@ const ProductPage = () => {
           {/* Images */}
           <div className="space-y-4">
             <div className="aspect-[3/4] bg-secondary flex items-center justify-center">
-              <span className="font-serif text-lg text-muted-foreground/40 text-center px-8">{product.name}</span>
+            <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
+              {/* <span className="font-serif text-lg text-muted-foreground/40 text-center px-8">{product.name}</span> */}
             </div>
             <div className="grid grid-cols-4 gap-2">
               {[1, 2, 3, 4].map(i => (
@@ -130,6 +131,9 @@ const ProductPage = () => {
             <div className="flex gap-3 mb-8">
               <button onClick={handleAddToCart} className="btn-brand flex-1">
                 Add to Bag — ${(product.price * quantity).toFixed(0)}
+              </button>
+              <button onClick={handleAddToCart} className="btn-brand flex-1">
+                Shop Now
               </button>
               <button
                 onClick={() => toggleWishlist(product)}

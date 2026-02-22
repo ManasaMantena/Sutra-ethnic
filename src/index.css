@@ -143,13 +143,13 @@
 
   .btn-brand {
     @apply inline-flex items-center justify-center px-8 py-3 text-sm font-medium tracking-[0.15em] uppercase transition-all duration-300;
-    background-color: hsl(var(--charcoal));
+    background-color: hsl(var(--gold));
     color: hsl(var(--cream));
     letter-spacing: 0.15em;
   }
 
   .btn-brand:hover {
-    background-color: hsl(var(--gold));
+    background-color: hsl(var(--gold-dark));
     color: hsl(var(--cream));
   }
 
@@ -221,4 +221,19 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--gold));
+}
+
+/* Hide scrollbar for Chrome, Safari and Edge */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge */
+.no-scrollbar {
+  -ms-overflow-style: none;
+}
+
+/* Hide scrollbar for Firefox */
+.no-scrollbar {
+  scrollbar-width: none;
 }

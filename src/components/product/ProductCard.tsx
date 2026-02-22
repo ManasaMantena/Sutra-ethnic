@@ -34,7 +34,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
       {/* Image */}
       <Link to={`/product/${product.slug}`} className="block relative overflow-hidden aspect-[3/4] bg-secondary">
         <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass} flex items-center justify-center`}>
-          <span className="font-serif text-lg text-muted-foreground/40 text-center px-4">{product.name}</span>
+          {/* <span className="font-serif text-lg text-muted-foreground/40 text-center px-4">{product.name}</span> */}
+          <img src={product.images[0]} alt={product.name} className="w-full h-full object-cover" />
         </div>
 
         {/* Badges */}

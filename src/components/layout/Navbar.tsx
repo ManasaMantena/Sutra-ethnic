@@ -36,7 +36,7 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
       {/* Main nav */}
       <div className="container-luxury">
-        <div className="flex items-center justify-between py-6 lg:py-8">
+        <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
             <h1 className="font-serif text-3xl lg:text-4xl font-bold tracking-tight text-charcoal">
@@ -65,6 +65,11 @@ const Navbar = () => {
               </div>
             ))}
             {secondaryNavLinks.map((link) => (
+              <div
+                 key={link.label}
+                // onMouseEnter={() => handleEnter(link.label)}
+                className="relative group"
+              >
               <Link
                 key={link.label}
                 to={link.href}
@@ -72,6 +77,7 @@ const Navbar = () => {
               >
                 {link.label}
               </Link>
+              </div>
             ))}
           </nav>
 
