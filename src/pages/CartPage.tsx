@@ -43,7 +43,8 @@ const CartPage = () => {
                 <div key={`${item.product.id}-${item.size}`} className="grid grid-cols-12 gap-4 py-6 border-b border-border items-center">
                   <div className="col-span-12 lg:col-span-6 flex gap-4">
                     <div className="w-24 h-32 bg-secondary flex-shrink-0 flex items-center justify-center">
-                      <span className="text-[8px] text-muted-foreground text-center px-1">{item.product.name}</span>
+                      {/* <span className="text-[8px] text-muted-foreground text-center px-1">{item.product.name}</span> */}
+                      <img src={item.product.images[0]} alt={item.product.name} className="w-full h-full object-cover" />
                     </div>
                     <div>
                       <Link to={`/product/${item.product.slug}`} className="font-serif text-sm text-foreground hover:text-primary">{item.product.name}</Link>

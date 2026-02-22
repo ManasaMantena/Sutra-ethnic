@@ -49,7 +49,8 @@ const CartDrawer = () => {
             items.map((item) => (
               <div key={`${item.product.id}-${item.size}`} className="flex gap-4">
                 <div className="w-20 h-24 bg-secondary flex-shrink-0 flex items-center justify-center">
-                  <span className="text-[9px] text-muted-foreground text-center px-1">{item.product.name}</span>
+                  {/* <span className="text-[9px] text-muted-foreground text-center px-1">{item.product.name}</span> */}
+                  <img src={item.product.images[0]} alt={item.product.name} className="w-full h-full object-cover" /> 
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="font-serif text-sm text-foreground truncate">{item.product.name}</h4>
